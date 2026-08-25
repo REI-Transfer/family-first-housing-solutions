@@ -10,11 +10,13 @@ import { isYouTubeUrl, toYouTubeEmbed } from "@/lib/youtube"
 
 const RECOMMENDED_READS = ARTICLES.slice(0, 4)
 
-// Vertical (9:16) testimonial-style videos shown on the thank-you page.
-// Hosted on Vercel Blob — referenced by URL, not re-hosted.
+// Vertical (9:16) welcome/next-steps videos from the owner, shown on the
+// thank-you page. Hosted on Vercel Blob — referenced by URL, not re-hosted.
+// The #t=2 media fragment makes the poster a sharp frame (not the blurry
+// first frame); playback still starts at 0 (see VerticalVideoShowcase).
 const VERTICAL_TY_VIDEOS = [
-  { src: "https://h6wgqkckl3pz1jd1.public.blob.vercel-storage.com/TY%20Page%20Family%20First%20Video%202.mp4", title: "Family First — Video 1" },
-  { src: "https://h6wgqkckl3pz1jd1.public.blob.vercel-storage.com/TY%20Page%20Family%20First%20Video%204.mp4", title: "Family First — Video 2" },
+  { src: "https://h6wgqkckl3pz1jd1.public.blob.vercel-storage.com/TY%20Page%20Family%20First%20Video%202.mp4#t=2", title: "A message from Family First — who we are" },
+  { src: "https://h6wgqkckl3pz1jd1.public.blob.vercel-storage.com/TY%20Page%20Family%20First%20Video%204.mp4#t=2", title: "A message from Family First — what happens next" },
 ]
 
 // Per-client env vars (read on the server). All optional — when unset, the
@@ -95,6 +97,14 @@ function ThankYouV2() {
             Watch the short video below{config.ownerName ? ` from ${config.ownerName}` : ""} so you know exactly what to expect next.
           </p>
         </div>
+      </section>
+
+      <section className="bg-white pb-4 px-4">
+        <VerticalVideoShowcase
+          videos={VERTICAL_TY_VIDEOS}
+          heading={`A Message From ${config.ownerName || config.companyName}`}
+          subheading="Congrats on completing the survey! Watch these quick videos — who we are, and exactly what happens next."
+        />
       </section>
 
       <section className="bg-white pb-12">
@@ -328,12 +338,6 @@ function ThankYouV2() {
         </section>
       )}
 
-      <VerticalVideoShowcase
-        videos={VERTICAL_TY_VIDEOS}
-        heading="Hear It From Real Sellers"
-        subheading="A couple of quick stories while you wait for your offer."
-      />
-
       <footer className="bg-white border-t border-gray-200 py-8 text-center text-sm text-gray-400">
         &copy; {new Date().getFullYear()} {config.companyName}. All rights reserved.
       </footer>
@@ -365,6 +369,15 @@ function ThankYouV1() {
             The {config.companyName} team has received your information and will be in touch within{" "}
             <strong>24 hours</strong> with your cash offer. In the meantime, here are answers to common questions.
           </p>
+        </div>
+
+        {/* Owner welcome / next-steps videos (vertical 9:16) */}
+        <div className="mb-8">
+          <VerticalVideoShowcase
+            videos={VERTICAL_TY_VIDEOS}
+            heading={`A Message From ${config.ownerName || config.companyName}`}
+            subheading="Congrats on completing the survey! Watch these quick videos — who we are, and exactly what happens next."
+          />
         </div>
 
         {/* Video section */}
@@ -511,15 +524,6 @@ function ThankYouV1() {
               </div>
             ))}
           </div>
-        </div>
-
-        {/* Vertical testimonial videos (additive) */}
-        <div className="mb-8 -mx-4">
-          <VerticalVideoShowcase
-            videos={VERTICAL_TY_VIDEOS}
-            heading="Hear It From Real Sellers"
-            subheading="A couple of quick stories while you wait for your offer."
-          />
         </div>
 
         {/* Call CTA */}

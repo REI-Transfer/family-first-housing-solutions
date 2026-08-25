@@ -17,6 +17,9 @@ function VerticalVideoTile({ src, title }: VerticalVideo) {
   const handlePlay = () => {
     setPlaying(true)
     requestAnimationFrame(() => {
+      // The src carries a #t=… media fragment so the poster shows a sharp,
+      // non-blurry frame; reset to the start so playback still begins at 0.
+      if (ref.current) ref.current.currentTime = 0
       ref.current?.play().catch(() => setPlaying(false))
     })
   }
@@ -37,7 +40,7 @@ function VerticalVideoTile({ src, title }: VerticalVideo) {
         <button
           onClick={handlePlay}
           aria-label={`Play ${title}`}
-          className="absolute inset-0 flex items-center justify-center bg-black/35 hover:bg-black/25 transition-colors group"
+          className="absolute inset-0 flex items-center justify-center bg-black/15 hover:bg-black/10 transition-colors group"
         >
           <span className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-2xl transition-transform group-hover:scale-105">
             <Play className="h-8 w-8 text-gray-900 ml-1" fill="currentColor" />
@@ -59,8 +62,8 @@ export function VerticalVideoShowcase({
 }) {
   if (!videos.length) return null
   return (
-    <section className="bg-white border-t border-gray-200">
-      <div className="mx-auto max-w-3xl px-4 py-14 md:py-20">
+    <section>
+      <div className="mx-auto max-w-3xl">
         {(heading || subheading) && (
           <div className="text-center mb-8">
             {heading && (
