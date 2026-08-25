@@ -26,7 +26,6 @@ export default function HomePage() {
     <main className={ibuykc ? "relative min-h-screen bg-gray-50" : "relative min-h-screen"} style={ibuykc ? undefined : { backgroundColor: config.accentColor }}>
       <div className="relative z-10">
         <Header
-          companyName={config.companyName}
           phoneDisplay={config.phoneDisplay}
           phoneHref={config.phoneHref}
           logoUrl={config.logoUrl}
