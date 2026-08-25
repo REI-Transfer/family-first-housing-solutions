@@ -3,11 +3,19 @@ import Link from "next/link"
 import { CheckCircle2, Phone, MessageSquare } from "lucide-react"
 import config from "@/lib/config"
 import { ClickToPlayVideo } from "@/components/thankyou/click-to-play-video"
+import { VerticalVideoShowcase } from "@/components/thankyou/vertical-video-showcase"
 import { ContactCTA } from "@/components/article/contact-cta"
 import { ARTICLES } from "@/lib/articles"
 import { isYouTubeUrl, toYouTubeEmbed } from "@/lib/youtube"
 
 const RECOMMENDED_READS = ARTICLES.slice(0, 4)
+
+// Vertical (9:16) testimonial-style videos shown on the thank-you page.
+// Hosted on Vercel Blob — referenced by URL, not re-hosted.
+const VERTICAL_TY_VIDEOS = [
+  { src: "https://h6wgqkckl3pz1jd1.public.blob.vercel-storage.com/TY%20Page%20Family%20First%20Video%202.mp4", title: "Family First — Video 1" },
+  { src: "https://h6wgqkckl3pz1jd1.public.blob.vercel-storage.com/TY%20Page%20Family%20First%20Video%204.mp4", title: "Family First — Video 2" },
+]
 
 // Per-client env vars (read on the server). All optional — when unset, the
 // page falls back to the original simpler layout so non-ABQ clients are
@@ -320,6 +328,12 @@ function ThankYouV2() {
         </section>
       )}
 
+      <VerticalVideoShowcase
+        videos={VERTICAL_TY_VIDEOS}
+        heading="Hear It From Real Sellers"
+        subheading="A couple of quick stories while you wait for your offer."
+      />
+
       <footer className="bg-white border-t border-gray-200 py-8 text-center text-sm text-gray-400">
         &copy; {new Date().getFullYear()} {config.companyName}. All rights reserved.
       </footer>
@@ -497,6 +511,15 @@ function ThankYouV1() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Vertical testimonial videos (additive) */}
+        <div className="mb-8 -mx-4">
+          <VerticalVideoShowcase
+            videos={VERTICAL_TY_VIDEOS}
+            heading="Hear It From Real Sellers"
+            subheading="A couple of quick stories while you wait for your offer."
+          />
         </div>
 
         {/* Call CTA */}
