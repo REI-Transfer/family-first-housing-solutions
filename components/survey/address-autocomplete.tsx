@@ -30,6 +30,8 @@ interface AddressAutocompleteProps {
   // states are routed through onOutOfArea (same block path as out-of-service-area).
   allowedStates?: string[]
   placeholder?: string
+  // Optional wrapper className (e.g. v2 hero/header pass [&_input]:... styling)
+  className?: string
 }
 
 declare global {
@@ -94,6 +96,7 @@ export function AddressAutocomplete({
   serviceAreas = [],
   allowedStates = [],
   placeholder = "Start typing your address...",
+  className = "",
 }: AddressAutocompleteProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null)
@@ -191,7 +194,7 @@ export function AddressAutocomplete({
   }
 
   return (
-    <div className="relative">
+    <div className={`relative ${className}`}>
       <div className="absolute left-3 top-1/2 -translate-y-1/2 z-10">
         <MapPin className="h-5 w-5 text-gray-400" />
       </div>
