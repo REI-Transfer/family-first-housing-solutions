@@ -12,6 +12,14 @@ const config = {
   headerBgColor:   process.env.HEADER_BG_COLOR   ?? "#ffffff",
   logoUrl:         process.env.LOGO_URL          ?? "",
 
+  // Call-in number (footer). Falls back to the main phone when unset.
+  callinDisplay:   process.env.CALLIN_DISPLAY   ?? (process.env.PHONE_DISPLAY ?? "(800) 000-0000"),
+  callinHref:      process.env.CALLIN_HREF      ?? (process.env.PHONE_HREF ?? "8000000000"),
+
+  // v2 hero — founder cut-out photo + caption (v2 landing design).
+  foundersPhotoUrl: process.env.FOUNDERS_PHOTO_URL ?? "",
+  foundersCaption:  process.env.FOUNDERS_CAPTION  ?? "",
+
   // Owner / personalization
   ownerName:       process.env.OWNER_NAME        ?? "",
   headshotUrl:     process.env.HEADSHOT_URL      ?? "",
