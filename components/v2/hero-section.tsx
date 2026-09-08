@@ -18,6 +18,7 @@ interface HeroProps {
   allowedStates: string[];
   disqualifiedPropertyTypes: string[];
   disqualifiedOwnershipLengths: string[];
+  excludedZips: string[];
   motivationV2: boolean;
 }
 
@@ -29,6 +30,7 @@ export function HeroSection({
   allowedStates,
   disqualifiedPropertyTypes,
   disqualifiedOwnershipLengths,
+  excludedZips,
   motivationV2,
 }: HeroProps) {
   const [showSurvey, setShowSurvey] = useState(false);
@@ -124,6 +126,7 @@ export function HeroSection({
                     onOutOfArea={handleOutOfArea}
                     serviceAreas={serviceAreas}
                     allowedStates={allowedStates}
+                    excludedZips={excludedZips}
                     placeholder="Enter your property address..."
                     className="[&_input]:h-14 [&_input]:text-lg [&_input]:rounded-2xl [&_input]:shadow-lg [&_input]:border-[#1B2A4A]/30 [&_input]:bg-white"
                   />
@@ -182,6 +185,7 @@ export function HeroSection({
                   allowedStates={allowedStates}
                   disqualifiedPropertyTypes={disqualifiedPropertyTypes}
                   disqualifiedOwnershipLengths={disqualifiedOwnershipLengths}
+                  excludedZips={excludedZips}
                   motivationV2={motivationV2}
                 />
               </div>

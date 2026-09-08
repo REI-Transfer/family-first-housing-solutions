@@ -220,6 +220,8 @@ interface SurveyCardProps {
   disqualifiedOwnershipLengths?: string[]
   // 2-letter US state codes to ALLOW (ALLOWED_STATES). Empty → no state gate.
   allowedStates?: string[]
+  // ZIP codes to EXCLUDE (NEXT_PUBLIC_EXCLUDED_ZIPS). Empty → no zip gate.
+  excludedZips?: string[]
   // Additive seed props for the advertorial sticky-bar -> popup flow.
   // When an address is captured in the sticky bar, we open the modal pre-seeded
   // at step 2 so the user does not have to re-enter the address they already gave.
@@ -232,7 +234,7 @@ interface SurveyCardProps {
   motivationV2?: boolean
 }
 
-export function SurveyCard({ phoneDisplay = "(800) 000-0000", phoneHref = "8000000000", serviceAreas = [], disqualifiedPropertyTypes = ["mobile-home", "land", "other"], disqualifiedOwnershipLengths = [], allowedStates = [], initialAddress, initialStep, motivationV2 = false }: SurveyCardProps) {
+export function SurveyCard({ phoneDisplay = "(800) 000-0000", phoneHref = "8000000000", serviceAreas = [], disqualifiedPropertyTypes = ["mobile-home", "land", "other"], disqualifiedOwnershipLengths = [], allowedStates = [], excludedZips = [], initialAddress, initialStep, motivationV2 = false }: SurveyCardProps) {
   const [step, setStep] = useState(initialStep && initialStep >= 2 && initialStep <= 8 ? initialStep : 1)
   const [surveyData, setSurveyData] = useState<SurveyData>({
     address: initialAddress ?? "",
@@ -414,6 +416,14 @@ export function SurveyCard({ phoneDisplay = "(800) 000-0000", phoneHref = "80000
       setTimeout(() => { setDisqualifyReason("noEquity"); setIsDisqualified(true) }, 300)
       return
     }
+    // Excellent-condition hard DQ. Move-in-ready homes are disqualified with a
+    // block screen — the lead is never submitted (no post), consistent with the
+    // other hard filters above. (isQualifiedForMeta also treats 'excellent' as
+    // not-qualified, but this hard-block short-circuits before any submit.)
+    if (field === "condition" && value === "excellent") {
+      setTimeout(() => { setDisqualifyReason("excellentCondition"); setIsDisqualified(true) }, 300)
+      return
+    }
     // v2 motivation list (MOTIVATION_V2): "no reason / seeing what my house is
     // worth" hard-disqualifies — block screen, lead never submitted. The id only
     // exists in REASON_OPTIONS_V2, so this branch is inert for the legacy list.
@@ -465,7 +475,12 @@ export function SurveyCard({ phoneDisplay = "(800) 000-0000", phoneHref = "80000
       propertyType: {
         title: "We're Unable to Assist",
         message: "Unfortunately, we're not able to make an offer on this type of property at this time.",
-        detail: "We primarily purchase single-family homes, multi-family properties, and condos/townhouses. If you have a different property you'd like to sell, feel free to reach out.",
+        detail: "We primarily purchase single-family and multi-family homes. If you have a different property you'd like to sell, feel free to reach out.",
+      },
+      excellentCondition: {
+        title: "We're Unable to Make an Offer",
+        message: "Based on the condition you selected, your home may be better suited for the traditional market than a cash sale.",
+        detail: "We focus on homes that need some work. If your situation changes or you'd like to discuss your options, feel free to give us a call — we're always happy to help.",
       },
       outOfArea: {
         title: "Outside Our Service Area",
@@ -558,6 +573,7 @@ export function SurveyCard({ phoneDisplay = "(800) 000-0000", phoneHref = "80000
               onOutOfArea={(addr) => { setSurveyData({ ...surveyData, address: addr }); setAddressVerified(true); setAddressOutOfArea(true) }}
               serviceAreas={serviceAreas}
               allowedStates={allowedStates}
+              excludedZips={excludedZips}
               placeholder="Start typing your address..."
             />
 

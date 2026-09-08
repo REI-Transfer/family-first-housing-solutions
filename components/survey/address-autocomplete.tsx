@@ -11,6 +11,7 @@ export interface AddressDetails {
   state?: string
   city?: string
   county?: string
+  postalCode?: string
 }
 
 export interface ServiceArea {
@@ -29,6 +30,10 @@ interface AddressAutocompleteProps {
   // 2-letter US state codes to ALLOW. Empty → no state gate. Out-of-list
   // states are routed through onOutOfArea (same block path as out-of-service-area).
   allowedStates?: string[]
+  // ZIP codes to EXCLUDE (blocklist). Empty → no zip gate. A selected address
+  // whose postal_code is in this list is routed through onOutOfArea (same block
+  // path as out-of-area). Fail-open: a missing zip does NOT block.
+  excludedZips?: string[]
   placeholder?: string
   // Optional wrapper className (e.g. v2 hero/header pass [&_input]:... styling)
   className?: string
@@ -95,6 +100,7 @@ export function AddressAutocomplete({
   onOutOfArea,
   serviceAreas = [],
   allowedStates = [],
+  excludedZips = [],
   placeholder = "Start typing your address...",
   className = "",
 }: AddressAutocompleteProps) {
@@ -155,6 +161,7 @@ export function AddressAutocomplete({
       let state = ""
       let city = ""
       let county = ""
+      let postalCode = ""
       let lat: number | undefined
       let lng: number | undefined
 
@@ -162,6 +169,7 @@ export function AddressAutocomplete({
         if (component.types.includes("administrative_area_level_1")) state = component.short_name
         if (component.types.includes("locality")) city = component.long_name
         if (component.types.includes("administrative_area_level_2")) county = component.long_name
+        if (component.types.includes("postal_code")) postalCode = component.long_name
       })
 
       if (place.geometry?.location) {
@@ -169,11 +177,20 @@ export function AddressAutocomplete({
         lng = place.geometry.location.lng()
       }
 
-      const details: AddressDetails = { formattedAddress: place.formatted_address, lat, lng, state, city, county }
+      const details: AddressDetails = { formattedAddress: place.formatted_address, lat, lng, state, city, county, postalCode }
 
       // State allow-list gate (env ALLOWED_STATES). When set, any address whose
       // state is not in the list is treated as out-of-area. Empty → no gate.
       if (allowedStates.length > 0 && (!state || !allowedStates.map(s => s.toUpperCase()).includes(state.toUpperCase()))) {
+        onChange(place.formatted_address)
+        onOutOfArea?.(place.formatted_address)
+        return
+      }
+
+      // ZIP exclusion gate (env NEXT_PUBLIC_EXCLUDED_ZIPS). Blocklist: when set,
+      // an address whose postal_code is in the list is treated as out-of-area.
+      // Fail-open — a missing zip does NOT block. Empty list → no gate.
+      if (excludedZips.length > 0 && postalCode && excludedZips.includes(postalCode)) {
         onChange(place.formatted_address)
         onOutOfArea?.(place.formatted_address)
         return

@@ -15,6 +15,7 @@ interface HeaderProps {
   allowedStates: string[];
   disqualifiedPropertyTypes: string[];
   disqualifiedOwnershipLengths: string[];
+  excludedZips: string[];
   motivationV2: boolean;
 }
 
@@ -26,6 +27,7 @@ export function Header({
   allowedStates,
   disqualifiedPropertyTypes,
   disqualifiedOwnershipLengths,
+  excludedZips,
   motivationV2,
 }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -91,6 +93,7 @@ export function Header({
                     onOutOfArea={handleOutOfArea}
                     serviceAreas={serviceAreas}
                     allowedStates={allowedStates}
+                    excludedZips={excludedZips}
                     placeholder="Enter your address..."
                     className="[&_input]:h-9 [&_input]:text-sm [&_input]:rounded-lg [&_input]:bg-[#F5F7FA] [&_input]:border-[#E2E8F0]"
                   />
@@ -152,6 +155,7 @@ export function Header({
               allowedStates={allowedStates}
               disqualifiedPropertyTypes={disqualifiedPropertyTypes}
               disqualifiedOwnershipLengths={disqualifiedOwnershipLengths}
+              excludedZips={excludedZips}
               motivationV2={motivationV2}
             />
           </div>

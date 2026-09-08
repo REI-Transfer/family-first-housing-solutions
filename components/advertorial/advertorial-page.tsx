@@ -24,6 +24,14 @@ interface AdvertorialPageProps {
   // Must reach the sticky-bar AddressAutocomplete too: it seeds the modal at
   // step 2, which skips SurveyCard's step-1 out-of-area check.
   allowedStates?: string[]
+  // ZIP codes to EXCLUDE (NEXT_PUBLIC_EXCLUDED_ZIPS). Must reach the sticky-bar
+  // AddressAutocomplete too (it seeds the modal at step 2, skipping SurveyCard's
+  // step-1 gate). Empty → no zip gate.
+  excludedZips?: string[]
+  // Survey hard-DQ sets, forwarded so the advertorial funnel honors the same
+  // property-type / ownership-length gates as the / and /v3 funnels.
+  disqualifiedPropertyTypes?: string[]
+  disqualifiedOwnershipLengths?: string[]
   // Forwarded to SurveyCard so the advertorial funnel honors MOTIVATION_V2 too.
   motivationV2?: boolean
 }
@@ -38,6 +46,9 @@ export function AdvertorialPage({
   headshotUrl,
   serviceAreas,
   allowedStates = [],
+  excludedZips = [],
+  disqualifiedPropertyTypes = ["mobile-home", "land", "other"],
+  disqualifiedOwnershipLengths = [],
   motivationV2 = false,
 }: AdvertorialPageProps) {
   const market = marketName || "your area"
@@ -303,7 +314,7 @@ export function AdvertorialPage({
             <p style={{ color: C.muted }} className="mt-1 text-[15px]">A handful of quick questions. No cost, nothing owed, no arm-twisting.</p>
           </div>
           <div className="flex justify-center">
-            <SurveyCard phoneDisplay={phoneDisplay} phoneHref={phoneHref} serviceAreas={serviceAreas} allowedStates={allowedStates} motivationV2={motivationV2} />
+            <SurveyCard phoneDisplay={phoneDisplay} phoneHref={phoneHref} serviceAreas={serviceAreas} allowedStates={allowedStates} excludedZips={excludedZips} disqualifiedPropertyTypes={disqualifiedPropertyTypes} disqualifiedOwnershipLengths={disqualifiedOwnershipLengths} motivationV2={motivationV2} />
           </div>
           <p style={{ color: C.muted }} className="text-center text-[13px] mt-3.5 max-w-[460px] mx-auto leading-[1.5]">
             Your information stays private. We never sell or share it. Requesting an offer is free and carries no obligation.
@@ -380,7 +391,7 @@ export function AdvertorialPage({
         <div className="max-w-[760px] mx-auto flex gap-2.5 items-center">
           <label className="hidden sm:block text-[13px] font-bold whitespace-nowrap">Type your address to begin:</label>
           <div className="flex-1 min-w-0">
-            <AddressAutocomplete value={stickyAddr} onChange={setStickyAddr} onSelect={handleStickySelect} serviceAreas={serviceAreas} allowedStates={allowedStates} placeholder="Your property address" />
+            <AddressAutocomplete value={stickyAddr} onChange={setStickyAddr} onSelect={handleStickySelect} serviceAreas={serviceAreas} allowedStates={allowedStates} excludedZips={excludedZips} placeholder="Your property address" />
           </div>
           <button onClick={openModalFromButton} style={{ background: C.cta }} className="px-4 sm:px-[18px] py-3 text-white rounded-[9px] text-[14px] sm:text-[15px] font-extrabold whitespace-nowrap hover:opacity-95 transition-opacity">
             See My Cash Offer →
@@ -398,6 +409,9 @@ export function AdvertorialPage({
               phoneHref={phoneHref}
               serviceAreas={serviceAreas}
               allowedStates={allowedStates}
+              excludedZips={excludedZips}
+              disqualifiedPropertyTypes={disqualifiedPropertyTypes}
+              disqualifiedOwnershipLengths={disqualifiedOwnershipLengths}
               initialAddress={seeded?.address}
               initialStep={seeded && seeded.state ? 2 : undefined}
               motivationV2={motivationV2}
