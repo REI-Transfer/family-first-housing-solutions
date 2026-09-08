@@ -69,6 +69,13 @@ const config = {
   // @main projects that never set ALLOWED_STATES.
   allowedStates:   process.env.ALLOWED_STATES ?? "",
 
+  // Geo exclusion — comma-separated ZIP codes to BLOCK (e.g. "48201,48226").
+  // When set, a selected address whose postal_code is in the list is treated as
+  // out-of-area (blocked at step 1, no lead fires). Fail-open on missing zip.
+  // Empty (default) → no zip gate → byte-identical behavior for every existing
+  // rei-survey-template project that never sets NEXT_PUBLIC_EXCLUDED_ZIPS.
+  excludedZips:    process.env.NEXT_PUBLIC_EXCLUDED_ZIPS ?? "",
+
   // Webhook (server-side only — never exposed to browser)
   webhookUrl:      process.env.WEBHOOK_URL ?? "",
 

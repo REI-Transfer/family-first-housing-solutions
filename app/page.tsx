@@ -19,6 +19,7 @@ export default function HomePage() {
   const allowedStates = config.allowedStates.split(",").map((s) => s.trim()).filter(Boolean);
   const disqualifiedPropertyTypes = config.disqualifiedPropertyTypes.split(",").map((s) => s.trim()).filter(Boolean);
   const disqualifiedOwnershipLengths = config.disqualifiedOwnershipLengths.split(",").map((s) => s.trim()).filter(Boolean);
+  const excludedZips = config.excludedZips.split(",").map((s) => s.trim()).filter(Boolean);
   let serviceAreas: ServiceArea[] = [];
   try { serviceAreas = JSON.parse(config.serviceAreas); } catch {}
 
@@ -29,6 +30,7 @@ export default function HomePage() {
     allowedStates,
     disqualifiedPropertyTypes,
     disqualifiedOwnershipLengths,
+    excludedZips,
     motivationV2: config.motivationV2,
   };
 

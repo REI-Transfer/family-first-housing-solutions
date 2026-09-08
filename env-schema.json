@@ -148,6 +148,14 @@
     "description": "Comma-separated 2-letter US state codes to ALLOW (e.g. 'CA' or 'CA,NV'). When set, any address whose state is not in the list is blocked at step 1 as out-of-area and no lead fires. Empty (default) = no geo gate."
   },
   {
+    "name": "NEXT_PUBLIC_EXCLUDED_ZIPS",
+    "type": "string",
+    "required": false,
+    "scope": "public",
+    "default": "",
+    "description": "Comma-separated ZIP codes to EXCLUDE/block (e.g. '48201,48226'). When set, a selected address whose postal code is in the list is blocked at step 1 as out-of-area and no lead fires (fail-open: a missing ZIP does not block). Empty (default) = no ZIP gate. Client-side gate, so NEXT_PUBLIC_ prefixed."
+  },
+  {
     "name": "DISQUALIFIED_OWNERSHIP_LENGTHS",
     "type": "string",
     "required": false,

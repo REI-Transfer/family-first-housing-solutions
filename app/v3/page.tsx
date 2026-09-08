@@ -38,6 +38,7 @@ export default function V3Page() {
   const disqualifiedPropertyTypes = config.disqualifiedPropertyTypes
     .split(",").map(s => s.trim()).filter(Boolean)
   const allowedStates = config.allowedStates.split(",").map(s => s.trim()).filter(Boolean)
+  const excludedZips = config.excludedZips.split(",").map(s => s.trim()).filter(Boolean)
 
   return (
     <main className="relative min-h-screen bg-gray-50">
@@ -77,6 +78,7 @@ export default function V3Page() {
           serviceAreas={parsedServiceAreas}
           disqualifiedPropertyTypes={disqualifiedPropertyTypes}
           allowedStates={allowedStates}
+          excludedZips={excludedZips}
           phoneHref={config.phoneHref}
           phoneDisplay={config.phoneDisplay}
           motivationV2={config.motivationV2}
