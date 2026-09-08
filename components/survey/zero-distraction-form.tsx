@@ -93,6 +93,8 @@ const DQ_REASONS = {
   listed: "Your home is currently listed on the market, so we can't make an offer right now. Once it's off-market, we'd be glad to take a look.",
   exploring: "It sounds like you're just gathering information right now. When you're ready to sell, come back and we'll get you a cash offer.",
   noReason: "It sounds like you're just gathering information right now. When you're ready to sell, come back and we'll get you a cash offer.",
+  excellentCondition: "Based on the condition you selected, your home may be better suited for the traditional market than a cash sale. If your situation changes, feel free to give us a call.",
+  noEquity: "Based on how long you've owned the property, there typically isn't enough equity for us to make a fair cash offer. If your situation changes, feel free to give us a call.",
 } as const
 type DqKey = keyof typeof DQ_REASONS
 
@@ -104,6 +106,14 @@ function checkHardDq(key: keyof FormState, value: string): DqKey | null {
   // hard-disqualifies. The id only exists in REASON_OPTIONS_V2, so this is inert
   // for the legacy list.
   if (key === "reason" && value === "no-reason") return "noReason"
+  // Excellent-condition hard DQ — move-in-ready homes are blocked (no lead), for
+  // parity with the SurveyCard funnel (/ and /advertorial). Previously excellent
+  // only failed the soft pixel gate here (lead still captured).
+  if (key === "condition" && value === "excellent") return "excellentCondition"
+  // Ownership-length hard DQ — under-5-year owners are blocked (no lead), mirroring
+  // the SurveyCard env DISQUALIFIED_OWNERSHIP_LENGTHS=less-than-3,3-to-5. This form's
+  // yearsOwned ids are "0-2"/"3-5" (both < 5 years). Previously soft (pixel) only.
+  if (key === "yearsOwned" && (value === "0-2" || value === "3-5")) return "noEquity"
   return null
 }
 
