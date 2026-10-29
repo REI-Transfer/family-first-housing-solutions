@@ -3,8 +3,8 @@ import { createHash } from "crypto"
 
 // Blocklist as SHA-256 of the normalized value (phone = last 10 digits,
 // email = trimmed lowercase), so no sender PII is stored in the repo.
-const BLOCKED_PHONE_HASHES = new Set(["e9b60556fb76942ba113e878f325ea928d90d5253ea10497bd5a3427e3aa4dc2", "a7b4e2aec4ddc6607f5d2f4835a6ad2409f631ce5fbe6da09cc8a0cfdb36b861"])
-const BLOCKED_EMAIL_HASHES = new Set(["c3d26ddc0f25a1fb56fdaf1a385b5e39e6f2af1df2d18120e477c0dfadcf2262", "b58df240b9ebac887e85bd99b8cdead3cdaa370d944d9bf7d6bf81460c8f4814"])
+const BLOCKED_PHONE_HASHES = new Set(["e9b60556fb76942ba113e878f325ea928d90d5253ea10497bd5a3427e3aa4dc2", "a7b4e2aec4ddc6607f5d2f4835a6ad2409f631ce5fbe6da09cc8a0cfdb36b861", "27b2f65458094a22382e6cebbd03e23a470767b0613de43abb3db47cf7cdd8f8"])
+const BLOCKED_EMAIL_HASHES = new Set(["c3d26ddc0f25a1fb56fdaf1a385b5e39e6f2af1df2d18120e477c0dfadcf2262", "b58df240b9ebac887e85bd99b8cdead3cdaa370d944d9bf7d6bf81460c8f4814", "47d8ff9e19e93516317fc28a3dd9fc3d59ac88513060d5b75f656cd417b860ad"])
 const sha256 = (v: string) => createHash("sha256").update(v).digest("hex")
 
 // Simple in-memory rate limiter (resets on deploy/restart)
