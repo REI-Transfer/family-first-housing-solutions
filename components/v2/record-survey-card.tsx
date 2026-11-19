@@ -699,6 +699,9 @@ export function RecordSurveyCard({ initialAddress, initialDetails, brand, mode =
     if (!surveyData.reason) return
     const next = { ...surveyData, reasonDetails: reasonDraft.trim() }
     setSurveyData(next)
+    // A reason this client screens out (e.g. "no reason, just curious"), same as its current form.
+    const dq = stage2DisqualifyReason("reason", next.reason)
+    if (dq) { if (!oneStep) sendDisqualified(dq, next); disqualify(dq); return }
     advance(next, stage2Fields)
   }
 
