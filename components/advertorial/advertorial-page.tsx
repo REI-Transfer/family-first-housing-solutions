@@ -314,7 +314,7 @@ export function AdvertorialPage({
             <p style={{ color: C.muted }} className="mt-1 text-[15px]">A handful of quick questions. No cost, nothing owed, no arm-twisting.</p>
           </div>
           <div className="flex justify-center">
-            <SurveyCard phoneDisplay={phoneDisplay} phoneHref={phoneHref} serviceAreas={serviceAreas} allowedStates={allowedStates} excludedZips={excludedZips} disqualifiedPropertyTypes={disqualifiedPropertyTypes} disqualifiedOwnershipLengths={disqualifiedOwnershipLengths} motivationV2={motivationV2} />
+            <SurveyCard recordCompanyName={companyName} phoneDisplay={phoneDisplay} phoneHref={phoneHref} serviceAreas={serviceAreas} allowedStates={allowedStates} excludedZips={excludedZips} disqualifiedPropertyTypes={disqualifiedPropertyTypes} disqualifiedOwnershipLengths={disqualifiedOwnershipLengths} motivationV2={motivationV2} />
           </div>
           <p style={{ color: C.muted }} className="text-center text-[13px] mt-3.5 max-w-[460px] mx-auto leading-[1.5]">
             Your information stays private. We never sell or share it. Requesting an offer is free and carries no obligation.
@@ -403,7 +403,7 @@ export function AdvertorialPage({
         <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center overflow-y-auto p-4" style={{ background: "rgba(0,0,0,0.55)" }} onClick={() => setModalOpen(false)}>
           <div className="relative w-full max-w-[600px] my-4" onClick={(e) => e.stopPropagation()}>
             <button onClick={() => setModalOpen(false)} aria-label="Close" className="absolute -top-3 -right-3 z-10 h-9 w-9 rounded-full bg-white text-gray-700 text-xl font-bold shadow-md flex items-center justify-center hover:bg-gray-100">×</button>
-            <SurveyCard
+            <SurveyCard recordCompanyName={companyName}
               key={seeded?.address || "modal"}
               phoneDisplay={phoneDisplay}
               phoneHref={phoneHref}

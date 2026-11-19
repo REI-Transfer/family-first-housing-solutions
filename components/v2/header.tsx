@@ -147,6 +147,7 @@ export function Header({
               Close
             </button>
             <SurveyCard
+              recordCompanyName={brand.companyName}
               initialAddress={address}
               initialStep={address ? 2 : undefined}
               phoneDisplay={phoneDisplay}

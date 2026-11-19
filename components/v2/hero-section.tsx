@@ -177,6 +177,7 @@ export function HeroSection({
             ) : (
               <div className="animate-scale-in">
                 <SurveyCard
+                  recordCompanyName={brand.companyName}
                   initialAddress={initialAddress}
                   initialStep={2}
                   phoneDisplay={phoneDisplay}
